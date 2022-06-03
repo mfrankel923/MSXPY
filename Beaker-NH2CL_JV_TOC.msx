@@ -1,0 +1,168 @@
+[TITLE]
+Beaker Chloramine Decay Example
+
+[OPTIONS]
+AREA_UNITS  FT2
+RATE_UNITS  SEC
+SOLVER      ROS2
+COUPLING    NONE
+TIMESTEP    300
+RTOL        0.0001
+ATOL        1.0e-8
+
+[SPECIES]
+BULK   HOCL    MMOL
+BULK   TOTCL   MMOL
+BULK   NH3     MMOL
+BULK   TOTNH   MMOL
+BULK   NH2CL   MMOL
+BULK   NHCL2   MMOL
+BULK   NCL3    MMOL
+BULK   I       MMOL
+
+BULK   OCL     MMOL
+BULK   NH4     MMOL
+
+BULK   TOTCO    MMOL
+
+
+;BULK   pH      units
+BULK   H       MMOL    ;hydrogen ion
+BULK   OH      MMOL    ;hydroxide ion
+BULK   CO3     MMOL    ;carbonate ion
+BULK   HCO3    MMOL    ;bicarbonate ion
+BULK   H2CO3   MMOL    ;carbonic acid
+
+
+BULK   cNH3    MG      ;ammonia as mg/L
+BULK   cNH2CL  MG      ;monochloramine as mg/L
+
+BULK   AGE     MG      ;Water Age
+BULK   DOC1    MG      ;Fast reacting component of TOC
+BULK   DOC2    MG      ;Slow reacting component of TOC
+
+
+
+[COEFFICIENTS]
+;Values converted to seconds to match the aquasim model- easier comparison
+CONSTANT        k1   4.2e6;   convert to sec 15008382286; 1.5e10
+CONSTANT        k2   2.1e-5;    0.07547972; 7.6e-2
+CONSTANT        k3   280 ; To match what is in the R code from the EPA
+CONSTANT        k4   6.5e-7
+CONSTANT        k6   60000; 2.16e8  ; changed from 2.2e8
+CONSTANT        k7   110;  3.96e5  ; changed from 4.0e5
+CONSTANT        k8   28000; 100800000 ;1.0e8
+CONSTANT        k9   8300  ;29880000; 3.0e7
+CONSTANT        k10  0.015;    55.0
+CONSTANT        k12  5.56e10
+CONSTANT        k13  1.39e9 
+CONSTANT        k14  231
+
+CONSTANT		k11CO3	6e6
+CONSTANT		k11OCL	90000
+CONSTANT		k11OH	3.28e9
+
+CONSTANT        kDOC1 5.4; 3.0E4
+CONSTANT        kDOC2 180;  6.5E5
+;CONSTANT        S1    0.02  Here these parameters don't do anything- need to specify the starting concentrations of DOC1 and DOC2
+;CONSTANT        S2    0.50
+
+
+CONSTANT        AC1    6900; 26185419 ; To match what is in the R code from the EPA
+CONSTANT        AC2    11; 40289.39 ; Changed from 4.0e4
+CONSTANT        AC3    0.22; 839; changed from 800
+CONSTANT        KNH4   5.623413251903491e-10
+CONSTANT		KHOCL  2.511886431509582e-8
+CONSTANT		KH2CO3 4.365746e-07
+CONSTANT        KHCO3  4.404207e-11
+CONSTANT        KW     1e-14
+
+
+[TERMS]
+k5    (AC1*H) + (AC2*H2CO3) + (AC3*HCO3)
+a1    k1*TOTCL*al0CL*TOTNH*al1NH
+a2    k2*NH2CL
+a3    k3*TOTCL*al0CL*NH2CL
+a4    k4*NHCL2
+a5    k5*NH2CL*NH2CL
+a6    k6*NHCL2*TOTNH*al1NH*H
+a7    k7*NHCL2*OH
+a8    k8*I*NHCL2
+a9    k9*I*NH2CL
+a10   k10*NH2CL*NHCL2
+k11   (al2CO*TOTCO*k11CO3)+(TOTCL*al1CL*k11OCL)+(k11OH*OH)
+a11   k11*TOTCL*al0CL*NHCL2
+a12   k12*NHCL2*NCL3*OH
+a13   k13*NH2CL*NCL3*OH
+a14   k14*NHCL2*TOTCL*al1CL
+
+a15   kDOC1*DOC1*NH2CL
+a16   kDOC2*DOC2*TOTCL*al0CL
+
+;Free Nitrogen Alphas
+al0NH  1/(1 + KNH4/H)
+al1NH  1/(1 + H/KNH4)
+
+;Free Chlorine Alphas
+al0CL  1/(1 + KHOCL/H)
+al1CL  1/(1 + H/KHOCL)
+
+;Carbonate Alphas
+
+al0CO 1/(1 + KH2CO3/H + KH2CO3*KHCO3/(H*H))
+al1CO 1/(1 + H/KH2CO3 + KHCO3/H)
+al2CO 1/(1 + H/KHCO3 + (H*H)/(KH2CO3*KHCO3))
+ 
+[PIPE]
+RATE   TOTNH     -a1 + a2 + a5 - a6 + a15
+RATE   TOTCL    -a1  + a2 - a3 + a4 + a8 - a11 + 2*a12 + a13 - a14  - a16
+;MF 7/21/21 added the 2 in 2*a5 based on R code and 2*a6
+RATE   NH2CL    a1  - a2 - a3 + a4 - 2*a5 + 2*a6 - a9 - a10 - a13  - a15
+RATE   NHCL2    a3 - a4 + a5 - a6 - a7 - a8 - a10 - a11 - a12 - a14
+RATE   I        a7 - a8 - a9
+RATE   DOC2     -a16
+RATE   NCL3    a11 - a12 - a13
+
+RATE   H        0
+
+RATE   TOTCO    0
+RATE   AGE      1
+RATE   DOC1     -a15
+
+
+EQUIL  OH     H*OH - KW ;1.0E-14
+
+
+FORMULA     cNH3     17000*NH3
+FORMULA     cNH2CL   71000*NH2CL ; conversion to MG/L as CL2
+FORMULA		NH3      TOTNH*al1NH
+FORMULA     NH4      TOTNH*(1-al1NH)
+FORMULA     HOCL     TOTCL*al0CL
+FORMULA     OCL      TOTCL*(1-al0CL)
+FORMULA     CO3      al2CO*TOTCO
+FORMULA     H2CO3    al0CO*TOTCO
+FORMULA     HCO3     al1CO*TOTCO
+;FORMULA     H        10^(-pH)
+
+
+
+[SOURCES]
+
+
+[QUALITY]
+
+NODE   1     NH2CL  4.22E-5   ; Units as CL2 directly - 3.0 mg/l as CL2
+;NODE   1     NH2CL  2.535211E-5   ; Units as CL2 directly
+NODE   1     DOC1  2.5E-6  ;TOC concentration 1.5 multiplied by S1 factor of 0.02
+NODE   1     DOC2   6.25E-5;TOC concentration 1.5 multiplied by S2 factor of 0.5
+NODE   1     TOTNH  9e-6;  2.14E-5 7/28/21 CHanged to the value pre-loaded in the aquasim model
+GLOBAL       TOTCO   0.004
+;GLOBAL       pH     7.75
+GLOBAL       H     1.77E-8
+
+
+[REPORT]
+NODES   ALL
+LINKS   ALL
+SPECIE  cNH3   YES  4
+SPECIE  cNH2CL YES  4
