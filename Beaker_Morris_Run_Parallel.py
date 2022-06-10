@@ -15,7 +15,8 @@ import pandas as pd
 import mf_msx_toolkit as mf
 import multiprocessing as mp
 import pickle
-    
+import os
+
 #Import the processes that will be use in the main process only
 if __name__=='__main__':
     from SALib.sample import morris as morris_s
@@ -53,7 +54,7 @@ if __name__=='__main__':
 
 
 #Number of trajectories to run for the models
-traj=20
+traj=3
 
 #Set the name of the pickle file
 pickle_file='beaker_morris.pkl'
@@ -79,7 +80,7 @@ inp_file='beaker.inp'
 msx_file='Beaker-NH2CL_JV_TOC.msx'
 
 #Number of days to run beaker model
-days=7
+days=3
 
 
 #%% Import and run hydraulic simulaiton
@@ -209,6 +210,10 @@ def beaker_sa(param_row):
 #Only run the parallelization and the rest of the analysis in the main process
 if __name__=='__main__':
         
+    
+    #Get a list of all files in directory before the model evaluations
+    files_before=os.listdir()
+    
     #Create a variable of the names of variables used in sensitivty analysis
     var_names=problem['names']
     
@@ -240,6 +245,21 @@ if __name__=='__main__':
     print(t2-t1)
     #Run the results using a map for parallelization
     #results=list(map(beaker_sa,param_values[0:2,:]))
+    
+    
+    
+    #Close epanet and msx models
+    epa.ENclose()
+    msx.MSXclose()
+    #Get a list of all files in directory after model evaluations
+    files_after=os.listdir()
+    
+    #Get the files that were created during model runs
+    new_files=list(set(files_after).difference(files_before))
+    
+    #Remove binary files that were generated during model evaluations
+    for file in new_files:
+        os.remove(file)
     
     #assemble variables to be saved to pickle file into a dictionary
     to_pickle={}
