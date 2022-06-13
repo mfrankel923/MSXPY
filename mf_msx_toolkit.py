@@ -14,6 +14,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 import wntr
 from scipy.linalg import cholesky
+from SALib.analyze import morris as morris_a
 
 def MSXRunQual(species='all', nodes='all', links='all',by_species='yes',bin_read='no',t_start=-1):
     #Function to run a MSX model and extract timeseries of specified species, links, and nodes
@@ -723,44 +724,153 @@ def Network2DPlot(network,color_var,size_var,title,nodes,min_scale=30,max_scale=
 
 def GenerateCorrDemands(group,n,n_samples,mean_group,corr_m):
     
-        #Assuming the same standard deviation for all nodes
-        std_all=np.ones((n_samples,1))*.1
+    #Assuming the same standard deviation for all nodes
+    std_all=np.ones((n_samples,1))*.1
+    
+    #The correlation among nodes becomes:
+    corr_node=np.ones((n_samples,n_samples))
+    
+    #Create correlation matrix for each node
+    for i in range(n_samples):
+        for j in range(n_samples):
+            if i!=j:
+                corr_node[i,j]=corr_m[group[i],group[j]]
+    
+    #Create array for the means to add to the results
+    group_arr=np.array(group)
+    mean_all=np.ones((n_samples,1))
+    for i in range(np.max(np.unique(group))+1):
+        mean_all[np.where(group_arr==i)[0]]=mean_group[i]
+    
+    
+    signal=[]
+    for i in range(len(std_all)):
+        signal.append(np.random.default_rng().normal(0,1,n))
+    
+    # signal=np.random.default_rng().normal(0,1,(n,2))
+    # signal01=np.random.default_rng().normal(0,1,n)
+    # signal02=np.random.default_rng().normal(0,1,n)
+    
+    
+    std_m = np.identity(len(std_all))*std_all
+    
+    # calc desired covariance (vc matrix)
+    cov_m = np.dot(std_m, np.dot(corr_node, std_m))
+    cky = cholesky(cov_m, lower=True)
+    
+    corr_data = np.dot(cky,signal)
+    corr_data=corr_data+mean_all
+    
+    #Transpose output so each row is each simulation and each column is a node
+    corr_data=corr_data.T
+    return corr_data
+
+def MorrisWallEvaluate(model_pickle,species):
+
+    results_model=model_pickle['results']
+    nodes=model_pickle['nodes']
+    links=model_pickle['links']
+    problem=model_pickle['problem']
+    param_values_model=model_pickle['param_values']
+    inp_file=model_pickle['inp_file']
+
+    
+    
+    #Extract the number of timesteps for which the model was computed
+    timesteps=len(results_model[0]['node'][nodes[0]].index)
+    timesteps_index=results_model[0]['node'][nodes[0]].index
+    
+    #Create a dictionary to store the mu_star and sigma results for the model
+    morris_results={}
+    morris_results['mu_star']={}
+    morris_results['sigma']={}
+    
+    morris_results['mu_star']['node']={}
+    morris_results['mu_star']['link']={}
+    
+    morris_results['sigma']['node']={}
+    morris_results['sigma']['link']={}
+    
+    
+    
+    age_results={}
+    age_mean={}
+    age_mean['node']=pd.DataFrame()
+    age_mean['link']=pd.DataFrame()
+    
+    for l in range(len(nodes)):
+        print('Evaluating Node ' + str(l+1) + ' of ' +str(len(nodes)))
+        #Compute the morris values for each parameter for each timestep of the model
+        #Create an array to store the mu_star values at each timestep
+        mu_star_timestep=np.zeros((timesteps,problem['num_vars']))
+        sigma_timestep=np.zeros((timesteps,problem['num_vars']))
         
-        #The correlation among nodes becomes:
-        corr_node=np.ones((n_samples,n_samples))
+        #Extract the model output results for that specific timestep
+        con_out=np.zeros((len(results_model),1))
+        for j in range(timesteps):
+            for i in range(len(results_model)):
+                con_out[i]=results_model[i]['node'][nodes[l]].loc[timesteps_index[j],species]
+            
+            #Compute morris results
+            a=morris_a.analyze(problem,param_values_model,con_out)
+            
+            mu_star_timestep[j,:]=a['mu_star']
+            sigma_timestep[j,:]=a['sigma']
         
-        #Create correlation matrix for each node
-        for i in range(n_samples):
-            for j in range(n_samples):
-                if i!=j:
-                    corr_node[i,j]=corr_m[group[i],group[j]]
+        #Convert mu_star_timestep into a dataframe
+        mu_star_df=pd.DataFrame(mu_star_timestep,index=timesteps_index,columns=problem['names'])
+        sigma_df=pd.DataFrame(sigma_timestep,index=timesteps_index,columns=problem['names'])
         
-        #Create array for the means to add to the results
-        group_arr=np.array(group)
-        mean_all=np.ones((n_samples,1))
-        for i in range(np.max(np.unique(group))+1):
-            mean_all[np.where(group_arr==i)[0]]=mean_group[i]
+        morris_results['mu_star']['node'][nodes[l]]=mu_star_df
+        morris_results['sigma']['node'][nodes[l]]=sigma_df
         
+        #Loop through all of the simulation results and get the average
+        #water age for each timestep and each node
         
-        signal=[]
-        for i in range(len(std_all)):
-            signal.append(np.random.default_rng().normal(0,1,n))
+        #Create a dataframe to put the results into
+        age_results[nodes[l]]=pd.DataFrame()
+        for i in range(len(results_model)):
+            age_results[nodes[l]]['S'+str(i+1)]=results_model[i]['node'][nodes[l]]['AGE']
         
-        # signal=np.random.default_rng().normal(0,1,(n,2))
-        # signal01=np.random.default_rng().normal(0,1,n)
-        # signal02=np.random.default_rng().normal(0,1,n)
+        age_mean['node'][nodes[l]]=age_results[nodes[l]].mean(axis=1)
         
+    for l in range(len(links)):
+        print('Evaluating Link ' + str(l+1) + ' of ' + str(len(links)))
+        #Compute the morris values for each parameter for each timestep of the model
+        #Create an array to store the mu_star values at each timestep
+        mu_star_timestep=np.zeros((timesteps,problem['num_vars']))
+        sigma_timestep=np.zeros((timesteps,problem['num_vars']))
         
-        std_m = np.identity(len(std_all))*std_all
+        #Extract the model output results for that specific timestep
+        con_out=np.zeros((len(results_model),1))
+        for j in range(timesteps):
+            for i in range(len(results_model)):
+                con_out[i]=results_model[i]['link'][links[l]].loc[timesteps_index[j],species]
+            
+            #Compute morris results
+            a=morris_a.analyze(problem,param_values_model,con_out)
+            
+            mu_star_timestep[j,:]=a['mu_star']
+            sigma_timestep[j,:]=a['sigma']
         
-        # calc desired covariance (vc matrix)
-        cov_m = np.dot(std_m, np.dot(corr_node, std_m))
-        cky = cholesky(cov_m, lower=True)
+        #Convert mu_star_timestep into a dataframe
+        mu_star_df=pd.DataFrame(mu_star_timestep,index=timesteps_index,columns=problem['names'])
+        sigma_df=pd.DataFrame(sigma_timestep,index=timesteps_index,columns=problem['names'])
         
-        corr_data = np.dot(cky,signal)
-        corr_data=corr_data+mean_all
+        morris_results['mu_star']['link'][links[l]]=mu_star_df
+        morris_results['sigma']['link'][links[l]]=sigma_df
         
-        #Transpose output so each row is each simulation and each column is a node
-        corr_data=corr_data.T
-        return corr_data
+        #Loop through all of the simulation results and get the average
+        #water age for each timestep and each node
+        
+        #Create a dataframe to put the results into
+        age_results[links[l]]=pd.DataFrame()
+        for i in range(len(results_model)):
+            age_results[links[l]]['S'+str(i+1)]=results_model[i]['link'][links[l]]['AGE']
+        
+        age_mean['link'][links[l]]=age_results[links[l]].mean(axis=1)
+        
+    return morris_results,age_mean
+
+
     
