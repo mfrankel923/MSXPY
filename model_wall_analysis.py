@@ -30,16 +30,13 @@ problem=model_pickle['problem']
 param_values_model=model_pickle['param_values']
 inp_file=model_pickle['inp_file']
 
-
-
-morris_results, age_mean= mf.MorrisWallEvaluate(model_pickle,species)
-
+morris_results, age= mf.MorrisWallEvaluate(model_pickle,species)
     
 plt.figure()
-plt.plot(age_mean['node']['32'],morris_results['mu_star']['node']['32']['Kd'],ls='',marker='o')
+plt.plot(age['node']['32'],morris_results['mu_star']['node']['32']['Kd'],ls='',marker='o')
 
 plt.figure()
-plt.plot(age_mean['link']['122'],morris_results['mu_star']['link']['122'],ls='',marker='o')
+plt.plot(age['link']['122'],morris_results['mu_star']['link']['122'],ls='',marker='o')
 
 #At an aggregate level, which parameters are influential?
 
@@ -94,11 +91,3 @@ plot_var=mu_star_link_df[parameter]
 
 wntr.graphics.plot_network(wn,link_attribute=plot_var)
 plt.title('Mu_star for parameter: '+parameter +' based on species: '+species )
-
-
-
-
-
-
-
-

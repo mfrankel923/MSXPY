@@ -79,8 +79,8 @@ if __name__=='__main__':
     #Define node where we want the initial concentrations. In net1 that is
     #node 9, the source
         
-    if model=='example':
-        node='9'
+    
+    node='9'
     
     #Extract the initial concentrations of interest
     initial_con=mf.GetInitialConcentration(node,species_vary)
@@ -134,17 +134,7 @@ nodes=mf.GetNodeNameList()
 links=mf.GetLinkNameList()
 
    
-def net1_sa(param_row):
-    #Define the node of the source
-    
-    if model=='net1':
-        node='9'
-    
-    if model=='pa2':
-        node='410'
-    if model == 'example':
-        node='9'
-    
+def run_model(param_row):
     
     #Separate the values of the constants to the initial concentrations for ease of
     #manipulation later
@@ -189,8 +179,8 @@ if __name__=='__main__':
     #Run the results using a map for parallelization
     pool=mp.Pool(processes=cores)
     
-    print('Running Models Net 1')
-    results_model=pool.map(net1_sa,param_values)
+    print('Running Models')
+    results_model=pool.map(run_model,param_values)
    
     pool.close()
     pool.join()
