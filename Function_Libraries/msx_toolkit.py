@@ -63,13 +63,18 @@ MSX_SETPOINT   2
 MSX_FLOWPACED  3
 '''
 
+#Change working directory so it pulls inp files as specified
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
 _plat= platform.system()
 if _plat=='Linux':
     _lib = ctypes.CDLL("/work/05881/mfrankel/stampede2/libepanet2.so",mode=ctypes.RTLD_GLOBAL)
     _lib = ctypes.CDLL("/work/05881/mfrankel/stampede2/libepanetmsx.so",mode=ctypes.RTLD_GLOBAL)
 else:
-    _lib = ctypes.windll.epanetmsx
+   # _lib = ctypes.windll.epanetmsx
+   # _lib = ctypes.windll(r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY\EPANET DLLs\epanetmsx.dll')
+   _lib = ctypes.CDLL(main_folder+'\EPANET_DLLs\epanetmsx.dll')
+
 
 # # os.chdir('C:\Users\User1\Dropbox (MIT)\\2018 Mekorot\Python EPANET wrapper\epanet-module')
 # # ctypes.windll.kernel1.SetDllDirectoryW(None)

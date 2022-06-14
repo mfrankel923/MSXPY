@@ -33,10 +33,16 @@ inp_file=model_pickle['inp_file']
 morris_results, age= mf.MorrisWallEvaluate(model_pickle,species)
     
 plt.figure()
-plt.plot(age['node']['32'],morris_results['mu_star']['node']['32']['Kd'],ls='',marker='o')
+node='32'
+parameter='Kd'
+plt.plot(age['node'][node],morris_results['mu_star']['node'][node][parameter],ls='',marker='o')
+plt.xlabel('Water Age (hours)')
+plt.ylabel('Mu_Star')
+plt.title('Mu_star vs water age | Parameter: '+ parameter+ ' | Node: '+node+' | Species: ' + species)
 
 plt.figure()
 plt.plot(age['link']['122'],morris_results['mu_star']['link']['122'],ls='',marker='o')
+plt.legend(list(morris_results['mu_star']['link']['122'].columns),ncol=4,loc="lower center", bbox_to_anchor=(0.5, -0.55))
 
 #At an aggregate level, which parameters are influential?
 
@@ -84,10 +90,8 @@ plt.title('Overall Mean values among each link | Species: '+species)
 #Import network to wntr
 wn = wntr.network.WaterNetworkModel(inp_file)
 
-
 #Choose a parameter
 parameter='Kb'
-plot_var=mu_star_link_df[parameter]
-
-wntr.graphics.plot_network(wn,link_attribute=plot_var)
+plot_var_link=mu_star_link_df[parameter]
+wntr.graphics.plot_network(wn,link_attribute=plot_var_link)
 plt.title('Mu_star for parameter: '+parameter +' based on species: '+species )

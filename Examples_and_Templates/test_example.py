@@ -5,24 +5,35 @@ Created on Fri Jun 10 16:43:20 2022
 @author: Matthew
 """
 
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
-import epanet_toolkit as epa
-import msx_toolkit as msx
 import pandas as pd
 import wntr
+import os
+
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+
+pwd=os.getcwd()
+pwd=pwd[0:-23]
+sys.path.insert(0,main_folder+'\Function_Libraries')
+sys.path.insert(0,main_folder+'\INP_and_MSX_Files')
+
 import mf_msx_toolkit as mf
+import epanet_toolkit as epa
+import msx_toolkit as msx
 
 #Close any files that were already open
 epa.ENclose()
 msx.MSXclose()
 
 #open the inp file
+os.chdir(main_folder)
 
-inp_file = 'Net1.inp'
+inp_file = r'INP_and_MSX_Files/Net1.inp'
 epa.ENopen(inp_file,'report.rpt')
 #open msx file
-msx.MSXopen('bacteria_net1.msx')
+msx.MSXopen(r'INP_and_MSX_Files/bacteria_net1.msx')
 #msx.MSXopen('example_net1.msx')
 
 #Import wntr model to be used later for plot
@@ -43,6 +54,10 @@ msx.MSXsolveH()
 print('Running Sim')
 my_results=mf.MSXRunQual(by_species='yes',t_start=days-1)
 print('Ending Sim')
+
+epa.ENclose()
+msx.MSXclose()
+os.remove('report.rpt')
 
 
 # by_step=1

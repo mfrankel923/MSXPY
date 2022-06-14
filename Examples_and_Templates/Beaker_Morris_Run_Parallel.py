@@ -6,6 +6,14 @@ Created on Wed May 25 10:25:48 2022
 """
 
 #%% Import Packages
+import os 
+import sys
+pwd=os.getcwd()
+pwd=pwd[0:-23]
+sys.path.insert(0,pwd+'\Function Libraries')
+sys.path.insert(0,pwd+'\INP and MSX Files')
+
+
 
 #Import the packages that will be used in the subprosesses:
 import numpy as np
@@ -15,7 +23,7 @@ import pandas as pd
 import mf_msx_toolkit as mf
 import multiprocessing as mp
 import pickle
-import os
+
 
 #Import the processes that will be use in the main process only
 if __name__=='__main__':

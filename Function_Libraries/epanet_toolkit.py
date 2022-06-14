@@ -12,6 +12,8 @@ import datetime
 import os
 
 
+#Change working directory so it pulls inp files as specified
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
 _plat= platform.system()
 if _plat=='Linux':
@@ -19,12 +21,9 @@ if _plat=='Linux':
 elif _plat=='Windows':
   try:
     # if epanet2.dll compiled with __cdecl (as in OpenWaterAnalytics)
-    try:
-        os.add_dll_directory("D:\Box Sync\working files\Leap-hi\Epanet-MSX\Monochloramine_Sensitivity_Analysis")
-    except:
-        #do nothing
-        1+1
-    _lib = ctypes.CDLL("epanet2.dll")
+    
+    _lib = ctypes.CDLL(main_folder+'\EPANET_DLLs\epanet2.dll')
+    #_lib = ctypes.CDLL("epanet2.dll")
     _lib.ENgetversion(ctypes.byref(ctypes.c_int()))
   except ValueError:
      # if epanet2.dll compiled with __stdcall (as in EPA original DLL)
@@ -36,6 +35,8 @@ elif _plat=='Windows':
 
 else:
   Exception('Platform '+ _plat +' unsupported (not yet)')
+
+
 
 
 _current_simulation_time=  ctypes.c_long()
