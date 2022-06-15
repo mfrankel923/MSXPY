@@ -12,6 +12,7 @@ import pandas as pd
 import wntr
 import os
 
+#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
 main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
 pwd=os.getcwd()

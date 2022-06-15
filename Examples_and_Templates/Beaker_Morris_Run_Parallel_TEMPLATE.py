@@ -16,7 +16,9 @@ Created on Fri Jun 10 13:53:42 2022
 import os 
 import sys
 
+#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
 main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+
 sys.path.insert(0,main_folder+'\Function_Libraries')
 #Set working directory
 os.chdir(main_folder)

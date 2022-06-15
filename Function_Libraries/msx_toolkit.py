@@ -11,6 +11,9 @@ import platform
 import datetime
 import os
 
+#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+
 '''
 LIST OF FUNCTIONS:
 msx.MSXopen(msx_file)
@@ -62,9 +65,6 @@ MSX_MASS       1
 MSX_SETPOINT   2
 MSX_FLOWPACED  3
 '''
-
-#Change working directory so it pulls inp files as specified
-main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
 _plat= platform.system()
 if _plat=='Linux':

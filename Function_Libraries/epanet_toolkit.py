@@ -12,7 +12,7 @@ import datetime
 import os
 
 
-#Change working directory so it pulls inp files as specified
+#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
 main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
 _plat= platform.system()
