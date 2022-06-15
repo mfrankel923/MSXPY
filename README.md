@@ -23,7 +23,7 @@ The Beaker (batch reactor) is appropriate if all species in the reaction scheme 
 
 The "Beaker_Morris_Run.ipynb" and "Model_Morris_Run.ipynb" are duplicated as python scripts. The jupyter notebooks are present to demonstrate the process of executing model evaluations. However, due to incompatabilities between the multiprocessing python module and jupyter notebook, the model evaluations are executed in serial. For faster computation time, use "Beaker_Morris_Run_Parallel.py" and "Model_morris_Run_Parallel.py" which uses the multiprocessing module to evaluate epanetmsx models in parallel.
 
-![](Github%20Chart.jpg)
+![](Github_Chart.jpg)
 
  *******************************************************************
 
