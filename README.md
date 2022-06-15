@@ -33,4 +33,7 @@ Note that the jupyter notebook "Function Uses and Examples.ipynb" contains docum
 
 
 Acknowledgments:
-<br> The python wrapper of msx functions, "msx_toolbox.py" was lightly edited 
+<br> 
+The python wrapper of msx functions, "msx_toolbox.py" was developed by Junli Hao: https://github.com/junli-h/EPANET-MSX-Python-wrapper/blob/master/epanetmsxmodule.py
+<br>
+The python wrapper of epanetfunctions, "epanet_toolbox.py" was developed by Gal Perelman, Gonçalo Grilo, and Michael Tryby: https://github.com/OpenWaterAnalytics/epanet-python/blob/dev/epanet-module/epamodule.py
