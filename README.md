@@ -9,8 +9,28 @@ The result of the Method of Morris is a metric Mu_star, which indicates the leve
 
 
 Utilization of this package requires installation of the following python packages:
+<br>
 -WNTR
+<br>
 -Matplotlib
+<br>
 -Numpy
+<br>
 -Pandas
+<br>
 -SALib
+
+The contents of this repository are as follows:
+<br> 
+-EPANET_DLLs contains the dynamic link libraries for epanet (version 2.0) and epanetmsx (version 1.1)
+<br>
+-Function_Lbraries which contains python wrappers for DLL functions, and additional functions for manipulation of EPANET MSX models within python
+<br>
+-INP_and_MSX_Files contains example epanet .inp and .msx files
+<br>
+-Examples_and_Templates contains Jupyter notebooks and scripts which demonstrate the functionality of this package, as well as provide templates to apply the functions in this package to any particular chemical reaction scheme
+Note that the jupyter notebook "Function Uses and Examples.ipynb" contains documentation and examples of all functions developed in this package.
+
+
+Acknowledgments:
+<br> The python wrapper of msx functions, "msx_toolbox.py" was lightly edited 
