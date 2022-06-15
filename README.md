@@ -2,6 +2,12 @@
  **IN DEVELOPMENT** This library of functions and examples is currently under development </br>
  Set of functions and code to execute EPANET MSX models in Python, and conduct sensitivity analyses
  
+ **************** IMPORTANT NOTE FOR USAGE ************************
+ 
+ In all of the scripts and jupyter notebooks, there is a variable called "main_folder" which contains the file path to the root of this directory. Be sure to change this string to the file path of the machine on which this code is implemented. Note that this also must be changed in the epanet_toolkit.py, mf_msx_toolkit.py, and msx_toolkit.py function libraries in the "Function_Libraries" folder
+ 
+ *******************************************************************
+ 
 This library of functions enables users to execute water quality models within a water distribution system using EPANET MSX, through a wrapper with python. In addition, this repository contains a jupyter notebook and analygous python script to execute sensitivity analyses to determine the relative level of influence of each chemical parameter in a reaction scheme. 
 
 The sensitivity analysis in this package utilizes a method called the Method of Morris, in which multiple model evaluations are contucted to determine the influence of a model parameter on a model output. The method is described in Saltelli(2004): http://www.andreasaltelli.eu/file/repository/SALTELLI_2004_Sensitivity_Analysis_in_Practice.pdf
@@ -30,7 +36,6 @@ The contents of this repository are as follows:
 <br>
 -Examples_and_Templates contains Jupyter notebooks and scripts which demonstrate the functionality of this package, as well as provide templates to apply the functions in this package to any particular chemical reaction scheme
 Note that the jupyter notebook "Function Uses and Examples.ipynb" contains documentation and examples of all functions developed in this package.
-
 
 Acknowledgments:
 <br> 
