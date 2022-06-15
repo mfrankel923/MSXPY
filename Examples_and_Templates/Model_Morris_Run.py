@@ -5,27 +5,41 @@ Created on Wed Jan 12 14:30:55 2022
 @author: Matthew
 """
 
-#Import the packages that will be used in the subprosesses:
+
+import sys
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import wntr
+import os
+
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+
+sys.path.insert(0,main_folder+'\Function_Libraries')
+
+#Import the packages that will be used in the subprosesses:
+
 import epanet_toolkit as epa
 import msx_toolkit as msx
-import pandas as pd
 import mf_msx_toolkit as mf
 import multiprocessing as mp
 import pickle
-import os
+
 
 #Import the processes that will be use in the main process only
 if __name__=='__main__':
     from SALib.sample import morris as morris_s
     import time
 
+#Set working directory
+os.chdir(main_folder)
+
+
 #Number of trajectories to run for the models
 traj=3
 
 #Set the name of the pickle file
-pickle_file='example_morris.pkl'
-
+pickle_file=r'Examples_and_Templates\Pickle Files\example_morris.pkl'
 
 #Decde if running net1 or net3
 
@@ -54,12 +68,12 @@ species_vary=['CL2','S','Xb']
 epa.ENclose()
 msx.MSXclose()
 
-if model=='example':
-    #open the inp file
-    inp_file='Net1.inp'
-    epa.ENopen(inp_file,'report.rpt')
-    #open msx file
-    msx.MSXopen('bacteria_net1.msx')  
+
+#open the inp file
+inp_file=r'INP_and_MSX_Files/Net1.inp'
+epa.ENopen(inp_file,'report.rpt')
+#open msx file
+msx.MSXopen(r'INP_and_MSX_Files/bacteria_net1.msx')  
 
 #Number of days to run model
 days=8
@@ -71,16 +85,18 @@ epa.ENsettimeparam(0, int(days*24*3600))
 msx.MSXsolveH()
 
 
+
+#Define node where we want the initial concentrations. In net1 that is
+#node 9, the source
+    
+
+node='9'
+
     
 if __name__=='__main__':
     #Get the values of the constants
     cons=mf.GetConstants(constants_vary)  
-    
-    #Define node where we want the initial concentrations. In net1 that is
-    #node 9, the source
-        
-    
-    node='9'
+
     
     #Extract the initial concentrations of interest
     initial_con=mf.GetInitialConcentration(node,species_vary)

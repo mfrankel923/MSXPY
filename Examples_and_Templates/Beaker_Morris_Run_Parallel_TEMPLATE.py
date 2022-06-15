@@ -13,6 +13,15 @@ Created on Fri Jun 10 13:53:42 2022
 
 #%% Import Packages
 
+import os 
+import sys
+
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+sys.path.insert(0,main_folder+'\Function_Libraries')
+#Set working directory
+os.chdir(main_folder)
+
+
 #Import the packages that will be used in the subprosesses:
 import numpy as np
 import epanet_toolkit as epa
@@ -21,12 +30,13 @@ import pandas as pd
 import mf_msx_toolkit as mf
 import multiprocessing as mp
 import pickle
-import os
+
 
 #Import the processes that will be use in the main process only
 if __name__=='__main__':
     from SALib.sample import morris as morris_s
     import time
+
 
 #%% Select initial variables
 
@@ -63,7 +73,7 @@ if __name__=='__main__':
 traj=_____
 
 #Set the name of the pickle file
-pickle_file='_________.pkl'
+pickle_file=r'Examples_and_Templates\Pickle Files\_________.pkl'
 
 #Set the seed so the morris trajectories are the same every time
 seed=4
@@ -79,9 +89,9 @@ species_vary=[__________]
 #import bounds csv for the range on each parameter
 bounds_range=pd.read_csv('bounds.csv',header=None,index_col=0)
 
-inp_file='________.inp'
+inp_file=r'INP_and_MSX_Files\beaker.inp'
 
-msx_file='________.msx'
+msx_file=r'INP_and_MSX_Files\________.msx'
 
 #Number of days to run beaker model
 days=____

@@ -8,11 +8,11 @@ Created on Wed May 25 10:25:48 2022
 #%% Import Packages
 import os 
 import sys
-pwd=os.getcwd()
-pwd=pwd[0:-23]
-sys.path.insert(0,pwd+'\Function Libraries')
-sys.path.insert(0,pwd+'\INP and MSX Files')
 
+main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+sys.path.insert(0,main_folder+'\Function_Libraries')
+#Set working directory
+os.chdir(main_folder)
 
 
 #Import the packages that will be used in the subprosesses:
@@ -65,7 +65,7 @@ if __name__=='__main__':
 traj=3
 
 #Set the name of the pickle file
-pickle_file='beaker_morris.pkl'
+pickle_file=r'Examples_and_Templates\Pickle Files\beaker_morris.pkl'
 
 #Set the seed so the morris trajectories are the same every time
 seed=4
@@ -83,9 +83,9 @@ species_vary=['DOC1','DOC2','TOTNH','TOTCO']
 #import bounds csv for the range on each parameter
 bounds_range=pd.read_csv('bounds.csv',header=None,index_col=0)
 
-inp_file='beaker.inp'
+inp_file= r'INP_and_MSX_Files\beaker.inp'
 
-msx_file='Beaker-NH2CL_JV_TOC.msx'
+msx_file= r'INP_and_MSX_Files\Beaker-NH2CL_JV_TOC.msx'
 
 #Number of days to run beaker model
 days=3
