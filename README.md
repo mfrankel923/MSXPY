@@ -56,9 +56,5 @@ The python wrapper of epanetfunctions, "epanet_toolbox.py" was developed by Gal 
  Matthew Frankel - mfrankel@utexas.edu
  <br> 
  Lina Sela linasela@utexas.edu
- 
- **************** IMPORTANT NOTE FOR USAGE ************************
- 
-In all of the scripts and jupyter notebooks, there is a variable called "main_folder" which contains the file path to the root of this directory. Be sure to change this string to the file path of the machine on which this code is implemented. Note that this also must be changed in the epanet_toolkit.py, mf_msx_toolkit.py, and msx_toolkit.py function libraries in the "Function_Libraries" folder
 
-![](Github_Chart.jpg)
+
