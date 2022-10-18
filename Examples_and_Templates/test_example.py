@@ -20,7 +20,7 @@ pwd=pwd[0:-23]
 sys.path.insert(0,main_folder+'\Function_Libraries')
 sys.path.insert(0,main_folder+'\INP_and_MSX_Files')
 
-import mf_msx_toolkit as mf
+import MSXPY_toolkit as mpy
 import epanet_toolkit as epa
 import msx_toolkit as msx
 
@@ -53,7 +53,7 @@ msx.MSXsolveH()
 
 #Run the reaction model
 print('Running Sim')
-my_results=mf.MSXRunQual(by_species='yes',t_start=days-1)
+my_results=mpy.MSXRunQual(by_species='yes',t_start=days-1)
 print('Ending Sim')
 
 epa.ENclose()
@@ -66,11 +66,11 @@ os.remove('report.rpt')
 # if by_step!=1:
 #     print('running')
 #     #Run the reaction model
-#     my_results=mf.MSXRunQual(by_species='no')
+#     my_results=mpy.MSXRunQual(by_species='no')
 #     print('finished')
     
 #     #Get the list of links
-#     links=mf.GetLinkNameList()
+#     links=mpy.GetLinkNameList()
     
 #     #for i in range(len(links)):
 #         #print(links[i])

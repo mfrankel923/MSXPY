@@ -22,7 +22,7 @@ sys.path.insert(0,main_folder+'\Function_Libraries')
 
 import epanet_toolkit as epa
 import msx_toolkit as msx
-import mf_msx_toolkit as mf
+import MSXPY_toolkit as mpy
 import multiprocessing as mp
 import pickle
 
@@ -96,11 +96,11 @@ node='9'
     
 if __name__=='__main__':
     #Get the values of the constants
-    cons=mf.GetConstants(constants_vary)  
+    cons=mpy.GetConstants(constants_vary)  
 
     
     #Extract the initial concentrations of interest
-    initial_con=mf.GetInitialConcentration(node,species_vary)
+    initial_con=mpy.GetInitialConcentration(node,species_vary)
         
 
     #append the rest of the initial concentrations
@@ -142,13 +142,13 @@ if __name__=='__main__':
     param_values_net1=param_values
 
 #Get the base demands
-base_demands=mf.GetAllNodeDemands()  
+base_demands=mpy.GetAllNodeDemands()  
 
 #Get list of nodes
-nodes=mf.GetNodeNameList()
+nodes=mpy.GetNodeNameList()
 
 #Get list of links
-links=mf.GetLinkNameList()
+links=mpy.GetLinkNameList()
 
    
 def run_model(param_row):
@@ -161,8 +161,8 @@ def run_model(param_row):
    
            
     #Set the constant values in the model
-    mf.SetConstants(constants_vary,con_values)
-    mf.SetInitialConcentration(node,species_vary,species_values)
+    mpy.SetConstants(constants_vary,con_values)
+    mpy.SetInitialConcentration(node,species_vary,species_values)
     
     #Solve the hydraulics of the model- If hydraulicspart of sensitivity analysis
     msx.MSXsolveH()   
@@ -170,7 +170,7 @@ def run_model(param_row):
     #Run the reaction model
     #Seprate by the t_start value
   
-    my_results=mf.MSXRunQual(by_species='no',t_start=days-1)
+    my_results=mpy.MSXRunQual(by_species='no',t_start=days-1)
        
     
     return my_results
