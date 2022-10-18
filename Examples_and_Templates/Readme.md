@@ -16,13 +16,11 @@ Depending on the phase of the species in the MSX model, either a batch reactor m
 
 **If All Species are in the Bulk Phase**
 
-1. Execute model evaluations using either *Batch_Morris_Run.ipynb* or *Batch_Morris_Run_Parallel.py*. If using your own reaction scheme, use *Batch_Morris_Run_Parallel_TEMPLATE.py* and fill in the blanks in the template according to your model/reaction scheme.
-2. Evaluate metrics of sensitivity based on Morris Method using *Batch_Morris_Analyze.ipynb*
+1. Execute model evaluations using either *Batch_Morris_Run.ipynb* or *Batch_Morris_Run_Parallel.py*. If using your own reaction scheme, use *Batch_Morris_Run_Parallel_TEMPLATE.py* and fill in the blanks in the template according to your model/reaction scheme. If you used *Batch_Morris_Run_Parallel_TEMPLATE.py*, note that your simulation results will be saved as a pickle file. 
+2. Evaluate metrics of sensitivity based on Morris Method using *Batch_Morris_Analyze.ipynb*. If you crated a new pickle file with model results, change the location and file name of the variable <code>pickle_file_beaker</code> within Batch_Morris_Analyze.ipynb.
 
 Note: The "Batch_Morris_Run.ipynb" and "Batch_Morris_Run_Parallel.py" produce the same results. The jupyter notebook (.ipynb file) is present to demonstrate the process of executing model evaluations. However, due to incompatabilities between the multiprocessing python module and jupyter notebook, the model evaluations are executed in serial. For faster computation time, use "Batch_Morris_Run_Parallel.py" which uses the multiprocessing module to evaluate epanetmsx models in parallel.
 
 **If Any Species are in the Wall Phase**
-1. Execute model evaluations using *Model_Morris_Run_Parallel.py*. If using your own reaction scheme, use *Model_Morris_Run_Parallel.pyTEMPLATE.py* and fill in the blanks in the template according to your model/reaction scheme.
-2. Evaluate metrics of sensitivity based on Morris Method using *Model_Morris_Analyze.ipynb*
-
-
+1. Execute model evaluations using *Model_Morris_Run_Parallel.py*. If using your own reaction scheme, use *Model_Morris_Run_Parallel_TEMPLATE.py* and fill in the blanks in the template according to your model/reaction scheme. If you used *Model_Morris_Run_Parallel_TEMPLATE.py*, note that your simulation results will be saved as a pickle file. 
+2. Evaluate metrics of sensitivity based on Morris Method using *Model_Morris_Analyze.ipynb*. If you crated a new pickle file with model results, change the location and file name of the variable <code>pickle_file_model</code> within Model_Morris_Analyze.ipynb.
