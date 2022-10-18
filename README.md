@@ -18,15 +18,8 @@ The contents of this repository are as follows:
 Note that the jupyter notebook "**Function Uses and Examples.ipynb"** contains documentation and examples of all functions developed in this package.
 
 ### Getting Started
-The sensitivity analysis in this package utilizes a method called the Method of Morris, in which multiple model evaluations are contucted to determine the influence of a model parameter on a model output. The method is described in Saltelli(2004): http://www.andreasaltelli.eu/file/repository/SALTELLI_2004_Sensitivity_Analysis_in_Practice.pdf
-The result of the Method of Morris is a metric Mu_star, which indicates the level of influence of a parameter on a function output, and sigma, which indicates the level of interaction between a paramater and all others. 
 
-
-The implementation of the Method of Morris requires two main steps: (1) model evaluations and (2) analysis. In the python scripts included, the evaluation and analysis portions are split into seperate notebooks/scripts. The model evaluation portion saves all model results to a pickle file, which is then read by the analysis script. The advantage of this approach is that model results are saved to a pickle file, so that model evaluations do not need to be re-run multiple times.
-
-The Beaker (batch reactor) is appropriate if all species in the reaction scheme are present in the bulk phase only. The Model analysis (running multiple simulations in a hydraulic network) is required if there are species present in the wall phase.
-
-The "Beaker_Morris_Run.ipynb" and "Model_Morris_Run.ipynb" are duplicated as python scripts. The jupyter notebooks are present to demonstrate the process of executing model evaluations. However, due to incompatabilities between the multiprocessing python module and jupyter notebook, the model evaluations are executed in serial. For faster computation time, use "Beaker_Morris_Run_Parallel.py" and "Model_morris_Run_Parallel.py" which uses the multiprocessing module to evaluate epanetmsx models in parallel.
+Download the files in this repository and ensure that the necessary package dependencies (listed below) are installed.
 
 ### Dependencies
 
@@ -44,8 +37,14 @@ Utilization of this package requires installation of the following python packag
 
 ### Additional notes
 
-### Examples
+The sensitivity analysis in this package utilizes a method called the Method of Morris, in which multiple model evaluations are contucted to determine the influence of a model parameter on a model output. The method is described in Saltelli(2004): http://www.andreasaltelli.eu/file/repository/SALTELLI_2004_Sensitivity_Analysis_in_Practice.pdf
+The result of the Method of Morris is a metric Mu_star, which indicates the level of influence of a parameter on a function output, and sigma, which indicates the level of interaction between a paramater and all others. 
 
+The implementation of the Method of Morris requires two main steps: (1) model evaluations and (2) analysis. In the python scripts included, the evaluation and analysis portions are split into seperate notebooks/scripts. The model evaluation portion saves all model results to a pickle file, which is then read by the analysis script. The advantage of this approach is that model results are saved to a pickle file, so that model evaluations do not need to be re-run multiple times.
+
+The Beaker (batch reactor) is appropriate if all species in the reaction scheme are present in the bulk phase only. The Model analysis (running multiple simulations in a hydraulic network) is required if there are species present in the wall phase.
+
+The "Beaker_Morris_Run.ipynb" and "Model_Morris_Run.ipynb" are duplicated as python scripts. The jupyter notebooks are present to demonstrate the process of executing model evaluations. However, due to incompatabilities between the multiprocessing python module and jupyter notebook, the model evaluations are executed in serial. For faster computation time, use "Beaker_Morris_Run_Parallel.py" and "Model_morris_Run_Parallel.py" which uses the multiprocessing module to evaluate epanetmsx models in parallel.
 
 ### Acknowledgments
 
@@ -56,8 +55,6 @@ The python wrapper of msx functions, "msx_toolbox.py" was developed by Junli Hao
 <br>
 <br> 
 The python wrapper of epanetfunctions, "epanet_toolbox.py" was developed by Gal Perelman, Gonçalo Grilo, and Michael Tryby: https://github.com/OpenWaterAnalytics/epanet-python/blob/dev/epanet-module/epamodule.py
-
-
 
 ### Contact Us
 
