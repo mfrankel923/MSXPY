@@ -42,7 +42,7 @@ The result of the Method of Morris is a metric Mu_star, which indicates the leve
 
 The implementation of the Method of Morris requires two main steps: (1) model evaluations and (2) analysis. In the python scripts included, the evaluation and analysis portions are split into seperate notebooks/scripts. The model evaluation portion saves all model results to a pickle file, which is then read by the analysis script. The advantage of this approach is that model results are saved to a pickle file, so that model evaluations do not need to be re-run multiple times.
 
-The Beaker (batch reactor) is appropriate if all species in the reaction scheme are present in the bulk phase only. The Model analysis (running multiple simulations in a hydraulic network) is required if there are species present in the wall phase.
+The Batch reactor is appropriate if all species in the reaction scheme are present in the bulk phase only. The Model analysis (running multiple simulations in a hydraulic network) is required if there are species present in the wall phase.
 
 The "Beaker_Morris_Run.ipynb" and "Model_Morris_Run.ipynb" are duplicated as python scripts. The jupyter notebooks are present to demonstrate the process of executing model evaluations. However, due to incompatabilities between the multiprocessing python module and jupyter notebook, the model evaluations are executed in serial. For faster computation time, use "Beaker_Morris_Run_Parallel.py" and "Model_morris_Run_Parallel.py" which uses the multiprocessing module to evaluate epanetmsx models in parallel.
 
