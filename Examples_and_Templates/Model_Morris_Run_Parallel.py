@@ -13,9 +13,7 @@ import pandas as pd
 import wntr
 import os
 
-#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
-main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
-
+main_folder = os.path.dirname(os.getcwd())
 sys.path.insert(0,main_folder+'\Function_Libraries')
 
 #Import the packages that will be used in the subprosesses:

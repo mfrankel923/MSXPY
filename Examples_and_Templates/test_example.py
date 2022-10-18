@@ -12,13 +12,11 @@ import pandas as pd
 import wntr
 import os
 
-#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
-main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
 
-pwd=os.getcwd()
-pwd=pwd[0:-23]
+main_folder = os.path.dirname(os.getcwd())
 sys.path.insert(0,main_folder+'\Function_Libraries')
-sys.path.insert(0,main_folder+'\INP_and_MSX_Files')
+#Set working directory
+os.chdir(main_folder)
 
 import MSXPY_toolkit as mpy
 import epanet_toolkit as epa

@@ -9,8 +9,8 @@ Created on Wed May 25 10:25:48 2022
 import os 
 import sys
 
-#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
-main_folder=r'C:\Users\frank\Documents\Box Sync\working files\Leap-hi\Epanet-MSX\MSXpy\MSXPY'
+
+main_folder = os.path.dirname(os.getcwd())
 
 sys.path.insert(0,main_folder+'\Function_Libraries')
 #Set working directory
@@ -22,7 +22,7 @@ import numpy as np
 import epanet_toolkit as epa
 import msx_toolkit as msx
 import pandas as pd
-import mf_msx_toolkit as mf
+import MSXPY_toolkit as mpy
 import multiprocessing as mp
 import pickle
 
@@ -135,10 +135,10 @@ if __name__=='__main__':
     #function arguments
     
     #Get the values of the constants
-    cons=mf.GetConstants(constants_vary)
+    cons=mpy.GetConstants(constants_vary)
         
     #Extract the initial concentrations of interest
-    initial_con=mf.GetInitialConcentration(node,species_vary)
+    initial_con=mpy.GetInitialConcentration(node,species_vary)
         
     #Adjust the TOC, s1, and s2 values outside of the model
     #Initial TOC value
@@ -203,13 +203,13 @@ def beaker_sa(param_row):
     #Leave out the first column of species_values because that is 
     #the direct TOC conecntration which does not end up directly in
     #the MSX model
-    mf.SetInitialConcentration(node,species_vary,species_values[1:])
+    mpy.SetInitialConcentration(node,species_vary,species_values[1:])
 
     #Set the constant values in the model
-    mf.SetConstants(constants_vary,con_values)
+    mpy.SetConstants(constants_vary,con_values)
 
     #run the model
-    my_results=mf.MSXRunQual(links=[],by_species='no')       
+    my_results=mpy.MSXRunQual(links=[],by_species='no')       
     
     return my_results 
 

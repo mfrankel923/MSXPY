@@ -13,8 +13,7 @@ import pandas as pd
 import wntr
 import os
 
-#CHANGE THIS VARIABLE BASED ON YOUR COMPUTER
-main_folder=r'__________________'
+main_folder = os.path.dirname(os.getcwd())
 
 sys.path.insert(0,main_folder+'\Function_Libraries')
 
