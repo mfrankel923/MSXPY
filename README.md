@@ -15,29 +15,29 @@ The contents of this repository are as follows:
 -[INP_and_MSX_Files](https://github.com/mfrankel923/MSXPY/tree/main/INP_and_MSX_Files) contains example epanet .inp and .msx files
 <br>
 -[Examples_and_Templates](https://github.com/mfrankel923/MSXPY/tree/main/Examples_and_Templates) contains Jupyter notebooks and scripts which demonstrate the functionality of this package, as well as provide templates to apply the functions in this package to any particular chemical reaction scheme
-Note that the jupyter notebook "**Function Uses and Examples.ipynb"** contains documentation and examples of all functions developed in this package.
+Note that the jupyter notebook [Documentation_Function_Uses_and_Examples.ipynb](https://github.com/mfrankel923/MSXPY/blob/main/Examples_and_Templates/Documentation_Function_Uses_and_Examples.ipynb) contains documentation and examples of all functions developed in this package.
 
 ### Getting Started
 
-Download the files in this repository and ensure that the necessary package dependencies (listed below) are installed. 
+Download the files in this repository and ensure that the necessary package dependencies (listed below) are installed. Execute [Example1_Run_Model.ipynb](https://github.com/mfrankel923/MSXPY/blob/main/Examples_and_Templates/Example1_Run_Model.ipynb) for example of executing an epanet msx model. It is expected that the user has understanding of epanet, epanet msx, and running/editing python code.
 
 ### Dependencies
 
 Utilization of this package requires installation of the following python packages:
 <br>
--WNTR
+-[WNTR](https://wntr.readthedocs.io/en/latest/overview.html)
 <br>
--Matplotlib
+-[Matplotlib](https://matplotlib.org/)
 <br>
--Numpy
+-[NumPy](https://numpy.org/)
 <br>
--Pandas
+-[pandas](https://pandas.pydata.org/)
 <br>
--SALib
+-[SALib](https://salib.readthedocs.io/en/latest/)
 
 ### Additional Notes
 
-The sensitivity analysis in this package utilizes a method called the Method of Morris, in which multiple model evaluations are contucted to determine the influence of a model parameter on a model output. The method is described in Saltelli(2004): http://www.andreasaltelli.eu/file/repository/SALTELLI_2004_Sensitivity_Analysis_in_Practice.pdf
+The sensitivity analysis in this package utilizes a method called the Method of Morris, in which multiple model evaluations are contucted to determine the influence of a model parameter on a model output. The method is described in [Saltelli (2004)](http://www.andreasaltelli.eu/file/repository/SALTELLI_2004_Sensitivity_Analysis_in_Practice.pdf): 
 The result of the Method of Morris is a metric Mu_star, which indicates the level of influence of a parameter on a function output, and sigma, which indicates the level of interaction between a paramater and all others. 
 
 
