@@ -1,5 +1,5 @@
 # MSXPY
- **IN DEVELOPMENT** This library of functions and examples is currently under development </br>
+ This library of functions and examples is currently under development </br>
  Set of functions and code to execute EPANET MSX models in Python, and conduct sensitivity analyses
  
  ### Overview
